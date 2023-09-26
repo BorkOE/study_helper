@@ -61,21 +61,25 @@
                 var curr_data = data;
                 
             }
-            // console.log(curr_data)
             choosen_question = randomKey(curr_data)          // Find a question
             correct_answer = curr_data[choosen_question]     // define correct answer
             wrong_answers = get_wrong_answers(curr_data)         // Get incorrect answers
         }
-
 
         function get_wrong_answers(curr_data){
             var ret = [];
             var keys = Object.keys(curr_data);
             shuffleArray(keys)
             for (var key in keys) {
-                if (keys[key] != choosen_question) {
-                    ret.push(curr_data[keys[key]])
+                var val = curr_data[keys[key]]
+                if (ret.includes(val)){
+                    continue
                 }
+                if (val == correct_answer){
+                    continue
+                }
+                
+                ret.push(val)
                 if (ret.length == 4) {
                     break;
                 }
