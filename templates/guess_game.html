@@ -140,6 +140,7 @@
         function get_pic(text){
             var pic_answer = document.createElement('img')
             pic_answer.setAttribute("src", "static/pics/" + text);
+            pic_answer.setAttribute("style", "width: auto; height: 200px;");
             pic_answer.id = text
             return pic_answer
         }
