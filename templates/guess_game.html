@@ -1,0 +1,149 @@
+<!-- TODO: 
+    
+ -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Play</title>
+    <form action="/">
+        <input type="submit" value="Back">
+    </form>
+    <p>Play the guess game on this page</p>
+    <!-- <button onclick="new_phase()">Start game</button> -->
+
+    <div class="choosen_card_div">
+        <div class="choosen_card" , id="choosen_card">
+            <h2 style="border-top:1px solid rgb(15, 152, 180); padding: 15px; margin-top: 30px" class="question"></h2>
+        </div>
+    </div>
+
+</head>
+
+<body>
+    <div class="flashcards" id="selectable">
+    </div>
+
+    <script>
+        const flashcards = document.getElementsByClassName("flashcards")[0];
+        const data = JSON.parse('{{data | tojson}}');
+        var choosen_question = '';
+        var correct_answer = '';
+        var wrong_answers = Array()
+
+        function new_phase() {
+            var selectable = document.getElementById('selectable')  // Clear old cards
+            selectable.innerHTML = '';
+            
+            select_cards()
+            set_choosen_card(choosen_question)
+            var possible_answers = wrong_answers
+            possible_answers.push(correct_answer)
+            shuffleArray(possible_answers)
+            for (var i in possible_answers) {
+                divMaker(possible_answers[i])
+            }
+
+        }
+
+        function select_cards() {
+            rand_i = getRandom()
+            if (rand_i) {
+                var curr_data = swap_keys_values(data);
+            } else {
+                var curr_data = data;
+                
+            }
+            // console.log(curr_data)
+            choosen_question = randomKey(curr_data)          // Find a question
+            correct_answer = curr_data[choosen_question]     // define correct answer
+            wrong_answers = get_wrong_answers(curr_data)         // Get incorrect answers
+        }
+
+
+        function get_wrong_answers(curr_data){
+            var ret = [];
+            var keys = Object.keys(curr_data);
+            shuffleArray(keys)
+            for (var key in keys) {
+                if (keys[key] != choosen_question) {
+                    ret.push(curr_data[keys[key]])
+                }
+                if (ret.length == 4) {
+                    break;
+                }
+            }
+            return ret
+        }
+
+        function shuffleArray(array) {
+                for (var i = array.length - 1; i > 0; i--) {
+                    var j = Math.floor(Math.random() * (i + 1));
+                    var temp = array[i];
+                    array[i] = array[j];
+                    array[j] = temp;
+                }
+            }
+
+        function swap_keys_values(json) {
+            var ret = {};
+            for (var key in json) {
+                ret[json[key]] = key;
+            }
+            return ret;
+        }
+
+        var randomKey = function (obj) {
+                var keys = Object.keys(obj);
+                return keys[keys.length * Math.random() << 0];
+            };
+
+        function getRandom() {
+            return Math.floor(Math.random() * 2);
+        }
+
+        function set_choosen_card(question) {
+            var choosen_card = document.getElementById('choosen_card')
+            h2 = choosen_card.children[0]
+            h2.innerHTML = question
+            return 'New question set'
+        }
+
+        
+        function divMaker(text) {
+            var div = document.createElement("div");
+            var h2_answer = document.createElement("h2");
+
+            div.className = 'flashcard';
+
+            h2_answer.setAttribute("style", "text-align:center; display:block; color:red; margin:10px");
+            h2_answer.innerHTML = text;
+            
+            div.appendChild(h2_answer);
+
+            div.addEventListener("click", function () {
+                if (h2_answer.innerHTML == correct_answer) {
+                    console.log('Rätt svar!')
+                    new_phase()
+                } else {
+                    console.log('Fel svar...')
+
+                }
+
+                });
+
+            flashcards.appendChild(div);
+        }
+
+        new_phase()
+
+    </script>
+
+</body>
+
+</html>

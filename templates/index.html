@@ -1,0 +1,52 @@
+<!-- TODO
+    - choose between tables
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+        <title>Phrases</title>
+        <p>Current table is: {{ last_table }}</p>
+        <form action="/" method="post">
+            {% for table in tables %}
+                {% if table == last_table %}
+                    <input type="radio" name="table_select" value="{{ table }}" checked>
+                {% else %}
+                    <input type="radio" name="table_select" value="{{ table }}">
+                {%  endif %}
+            <label for="{{ table }}">{{ table }}</label>
+            {% endfor %}
+            <br>
+            <input type="submit" value="Change table">
+        </form>
+        <br>
+
+    </head>
+    <body>
+        <a href="{{ url_for('add_data')}}">Add new data</a>
+        <br><br>
+        <a href="{{ url_for('play_all')}}">Play (all texts)</a>
+        <br><br>
+        <!-- <a href="{{ url_for('play_category')}}">Play category:</a> -->
+        <form action="/play_category" method="post">
+            {% for cat in categories %}
+            <input type="checkbox", name="{{ cat }}">
+            <label for="{{ cat }}">{{ cat }}</label>
+            {% endfor %}
+            <br><br>
+            <input type="radio" name="table_select" value="Flashcards">
+            <label for="Flashcards">Flashcards</label>
+            <br>
+            <input type="radio" name="table_select" value="Guess game">
+            <label for="Guess game">Guess game</label>
+            <br><br>
+            <input type="submit" value="Play">
+        </form>
+
+    </body>
+
+</html>
