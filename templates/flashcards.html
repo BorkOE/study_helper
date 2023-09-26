@@ -22,13 +22,13 @@
         {% for txt1, txt2 in data.items() %}
             <div class="flashcard" id="{{ txt1 }}" onclick="toggle_answer(this)">
                 {% if txt1.split('.')[-1] in ['jpg', 'jpeg', 'webp', 'png'] %}
-                    <img src="{{url_for('static', filename='pics/' + txt1)}}" />
+                    <img src="{{url_for('static', filename='pics/' + txt1)}}" style="width: auto; height: 200px;"/>
                 {% else %}
                     <h2 style="border-top:1px solid rgb(15, 152, 180); padding: 15px; margin-top: 30px" class="question">{{ txt1 }}</h2>
                 {% endif %}
 
                 {% if txt2.split('.')[-1] in ['jpg', 'jpeg', 'webp', 'png'] %}
-                    <img src="{{url_for('static', filename='pics/' + txt2)}}" style="display: none;" />
+                    <img src="{{url_for('static', filename='pics/' + txt2)}}" style="display: none; width: auto; height: 200px;" />
                 {% else %}
                     <h2 style="text-align:center; display:none; color:rgb(15, 152, 180)" class="answer">{{ txt2 }}</h2>
                 {% endif %}
