@@ -15,7 +15,6 @@
         <input type="submit" value="Back">
     </form>
     <p>Play the guess game on this page</p>
-    <!-- <button onclick="new_phase()">Start game</button> -->
 
     <div class="choosen_card_div">
         <div class="choosen_card" , id="choosen_card">
@@ -31,10 +30,13 @@
 
     <script>
         const flashcards = document.getElementsByClassName("flashcards")[0];
+        const question_card = document.getElementsByClassName("choosen_card_div")[0];
         const data = JSON.parse('{{data | tojson}}');
         var choosen_question = '';
         var correct_answer = '';
         var wrong_answers = Array()
+        const pic_filetypes = ['jpg', 'jpeg', 'webp', 'png']
+                
 
         function new_phase() {
             var selectable = document.getElementById('selectable')  // Clear old cards
@@ -108,26 +110,57 @@
         }
 
         function set_choosen_card(question) {
-            var choosen_card = document.getElementById('choosen_card')
-            h2 = choosen_card.children[0]
-            h2.innerHTML = question
-            return 'New question set'
+            question_card.innerHTML = ''
+            var div = document.createElement("div");
+            div.className = 'choosen_card';
+            var re = /(?:\.([^.]+))?$/;
+            var filetype = re.exec(question)[1]
+
+            if (pic_filetypes.includes(filetype)) {
+                var content = get_pic(question);
+            } else {
+                var content = get_h2(question);
+            }
+
+            div.appendChild(content);
+            question_card.appendChild(div);
+            // question_card.replaceChildren(div)
+        }
+    
+
+
+            function get_h2(text) {
+            var h2_answer = document.createElement("h2");
+            h2_answer.setAttribute("style", "text-align:center; display:block; color:red; margin:10px");
+            h2_answer.innerHTML = text;
+            h2_answer.id = text;
+            return h2_answer
         }
 
+        function get_pic(text){
+            var pic_answer = document.createElement('img')
+            pic_answer.setAttribute("src", "static/pics/" + text);
+            pic_answer.id = text
+            return pic_answer
+        }
         
         function divMaker(text) {
             var div = document.createElement("div");
-            var h2_answer = document.createElement("h2");
-
             div.className = 'flashcard';
+            var re = /(?:\.([^.]+))?$/;
+            var filetype = re.exec(text)[1]
 
-            h2_answer.setAttribute("style", "text-align:center; display:block; color:red; margin:10px");
-            h2_answer.innerHTML = text;
+            // Todo, pic
+            if (pic_filetypes.includes(filetype)){
+                var content = get_pic(text);
+            } else{
+                var content = get_h2(text);
+            }
             
-            div.appendChild(h2_answer);
+            div.appendChild(content);
 
             div.addEventListener("click", function () {
-                if (h2_answer.innerHTML == correct_answer) {
+                if (content.id == correct_answer) {
                     console.log('Rätt svar!')
                     new_phase()
                 } else {
