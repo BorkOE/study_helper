@@ -14,7 +14,9 @@
     <form action="/">
         <input type="submit" value="Back">
     </form>
-    <p>Play the guess game on this page</p>
+    <p id="n_corr_answers"></p>
+    <p id="n_wrong_answers"></p>
+    <p id="accuracy"></p>
 
     <div class="choosen_card_div">
         <div class="choosen_card" , id="choosen_card">
@@ -29,6 +31,8 @@
     </div>
 
     <script>
+        var n_correct_answers = 0
+        var n_wrong_answers = 0
         const flashcards = document.getElementsByClassName("flashcards")[0];
         const question_card = document.getElementsByClassName("choosen_card_div")[0];
         const data = JSON.parse('{{data | tojson}}');
@@ -42,6 +46,7 @@
             var selectable = document.getElementById('selectable')  // Clear old cards
             selectable.innerHTML = '';
             
+            update_stats()
             select_cards()
             set_choosen_card(choosen_question)
             var possible_answers = wrong_answers
@@ -97,9 +102,13 @@
             }
 
         function swap_keys_values(json) {
+            // Returns a swapped dict, shuffeling the keys before to achive different picks in game
             var ret = {};
-            for (var key in json) {
-                ret[json[key]] = key;
+            keys = Object.keys(json)
+            shuffleArray(keys)
+
+            for (var key in keys) {
+                ret[json[keys[key]]] = keys[key];
             }
             return ret;
         }
@@ -131,9 +140,7 @@
             // question_card.replaceChildren(div)
         }
     
-
-
-            function get_h2(text) {
+        function get_h2(text) {
             var h2_answer = document.createElement("h2");
             h2_answer.setAttribute("style", "text-align:center; display:block; color:red; margin:10px");
             h2_answer.innerHTML = text;
@@ -167,9 +174,12 @@
             div.addEventListener("click", function () {
                 if (content.id == correct_answer) {
                     console.log('Rätt svar!')
+                    n_correct_answers += 1
                     new_phase()
                 } else {
                     console.log('Fel svar...')
+                    n_wrong_answers += 1
+                    update_stats()
 
                 }
 
@@ -178,7 +188,27 @@
             flashcards.appendChild(div);
         }
 
+        function update_stats(text){
+            var corr_elem = document.getElementById('n_corr_answers')
+            var wrong_elem = document.getElementById('n_wrong_answers')
+            var accuracy_elem = document.getElementById('accuracy')
+            var temp_acc = ''
+
+            if (n_wrong_answers == 0){
+                temp_acc = 1
+            } else {
+                temp_acc = n_correct_answers / (n_correct_answers + n_wrong_answers)
+            }
+
+            temp_acc = Math.round((temp_acc*100) * 10) / 10 + '%'
+            
+            corr_elem.innerHTML = 'Correct answer: ' + n_correct_answers
+            wrong_elem.innerHTML = 'Wrong answer: ' + n_wrong_answers
+            accuracy_elem.innerHTML = 'Accuracy: ' + temp_acc
+        }
+
         new_phase()
+        update_stats()
 
     </script>
 

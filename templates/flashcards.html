@@ -18,7 +18,7 @@
 
 <body>
     <p>Play the game on this page</p>
-   <divclass="flashcards">
+   <div class="flashcards">
         {% for txt1, txt2 in data.items() %}
             <div class="flashcard" id="{{ txt1 }}" onclick="toggle_answer(this)">
                 {% if txt1.split('.')[-1] in ['jpg', 'jpeg', 'webp', 'png'] %}

@@ -9,7 +9,9 @@ class DatabaseHandler():
         self.cursor = self.connection.cursor()
         self.current_table = '1_NGEA01'
 
-    def set_current_table(self, table):
+    def set_current_table(self, table=''):
+        if not table:
+            return self.current_table
         self.current_table = table
 
     def check_input(self, input):

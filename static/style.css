@@ -82,7 +82,7 @@ buton:hover{
     flex-wrap: wrap;
     width: 100%;
     margin: auto;
-    margin-top: 10px;
+    margin-top: 20px;
     padding: 0 10px;
 }
 
@@ -93,8 +93,8 @@ buton:hover{
     flex-wrap: wrap;
     width: 100%;
     margin: auto;
-    margin-top: 10px;
-    padding: 0 10px;
+    margin-top: 20px;
+    padding: 0 20px;
 }
 
 .choosen_card {
@@ -102,7 +102,7 @@ buton:hover{
     width: 370px;
     height: 200px;
     word-wrap: break-word;
-    margin: 10px;
+    margin: 20px;
     background-color: white;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
 }
@@ -111,7 +111,7 @@ buton:hover{
     width: 370px;
     height: 200px;
     word-wrap: break-word;
-    margin: 10px;
+    margin: 20px;
     background-color: white;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
 }
