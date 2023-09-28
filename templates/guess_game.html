@@ -161,6 +161,7 @@
             div.className = 'flashcard';
             var re = /(?:\.([^.]+))?$/;
             var filetype = re.exec(text)[1]
+            var pressed = false
 
             // Todo, pic
             if (pic_filetypes.includes(filetype)){
@@ -177,11 +178,14 @@
                     n_correct_answers += 1
                     new_phase()
                 } else {
+                    if (pressed){
+                        return
+                    }
                     console.log('Fel svar...')
                     n_wrong_answers += 1
                     div.setAttribute('style', 'background-color:red')
                     update_stats()
-
+                    pressed = true
                 }
 
                 });
