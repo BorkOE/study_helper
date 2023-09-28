@@ -32,9 +32,8 @@ def add_data():
 
 @app.route("/play_all")
 def play_all():
-    text_dict = db_hand.get_all_texts()
+    text_dict = db_hand.get_all_texts(uniqify=True)
     return render_template('flashcards.html', data=text_dict)
-
 
 @app.route("/play_category", methods=['post'])
 def play_category():
@@ -52,7 +51,6 @@ def play_category():
         return render_template('flashcards.html', data=text_dict)
     else:
         return index()
-
 
 @app.route('/add_element', methods=['post'])
 def add_element():

@@ -37,7 +37,9 @@ class DatabaseHandler():
     def close(self):
         self.connection.close()
 
-    def data_to_dict(self, data):
+    def data_to_dict(self, data, uniqify=False):
+        if uniqify:
+            return self.make_unique(data)
         return {tup[0]: tup[1] for tup in data}
 
     def scamble(self, data):
@@ -45,16 +47,32 @@ class DatabaseHandler():
         shuffle(shuf_keys)
         return {v: data[v] for v in shuf_keys}
 
+    def make_unique(self, data):
+        '''returns dict with keys and values made unique'''
+        k_res = []
+        v_res = []
+        keys = [d[0] for d in data]
+        values = [d[1] for d in data]
+        for k in keys:
+            if k in k_res:
+                k += ' '
+            k_res.append(k)
+        for v in values:
+            if v in v_res:
+                v += ' '
+            v_res.append(v)
+        
+        return dict(zip(k_res, v_res))
+
 
     '''Return functions'''
-    def get_all_texts(self):
+    def get_all_texts(self, uniqify=False):
         '''Gets all texts from database'''
         self.cursor.execute(f'select text1, text2 from "{self.current_table}"')
         all_data = self.cursor.fetchall()
-        return self.scamble(self.data_to_dict(all_data))
+        return self.scamble(self.data_to_dict(all_data, uniqify))
 
     def get_categorcal_texts(self, categories):
-        # where_filt = categories 
         filt = ' OR '.join([f'{category_string} = "{c}"' for c in categories])
         data = self.cursor.execute(f'SELECT text1, text2 FROM "{self.current_table}" WHERE {filt}')
         return self.scamble(self.data_to_dict(data))
@@ -72,8 +90,7 @@ class DatabaseHandler():
 
 if __name__ == '__main__':
     dbh = DatabaseHandler()
-    dbh.get_tables()
-    
+    dbh.get_all_texts(uniqify=True)
     # resp = dbh.cursor.execute(f'SELECT * FROM {db_string} WHERE {category_string} = "cat1" OR category = "stones"')
     # data = resp.fetchall()
     # self.cursor.execute(f'select text1, text2 from {db_string}')
