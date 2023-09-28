@@ -142,7 +142,7 @@
     
         function get_h2(text) {
             var h2_answer = document.createElement("h2");
-            h2_answer.setAttribute("style", "text-align:center; display:block; color:red; margin:10px");
+            h2_answer.setAttribute("style", "text-align:center; display:block; color:rgb(15, 152, 180); margin:10px");
             h2_answer.innerHTML = text;
             h2_answer.id = text;
             return h2_answer
@@ -179,6 +179,7 @@
                 } else {
                     console.log('Fel svar...')
                     n_wrong_answers += 1
+                    div.setAttribute('style', 'background-color:red')
                     update_stats()
 
                 }
