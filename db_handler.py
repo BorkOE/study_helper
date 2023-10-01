@@ -37,10 +37,18 @@ class DatabaseHandler():
     def close(self):
         self.connection.close()
 
+    def allowed_strings(self, s):
+        return s.replace('"', r'\"')
+
+    def make_json_safe(self, data):
+        return {self.allowed_strings(k):self.allowed_strings(v) for k,v in data.items()}
+
     def data_to_dict(self, data, uniqify=False):
         if uniqify:
-            return self.make_unique(data)
-        return {tup[0]: tup[1] for tup in data}
+            out_data = self.make_unique(data)
+        else: 
+            out_data = {tup[0]: tup[1] for tup in data}
+        return self.make_json_safe(out_data)
 
     def scamble(self, data):
         shuf_keys = list(data.keys())
