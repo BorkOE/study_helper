@@ -46,7 +46,7 @@ def play_category():
     game_type = request.form.get('table_select')
     
     if game_type == 'Guess game':
-        return render_template('guess_game.html', data=text_dict)
+        return render_template('guess_game.html', data=db_hand.make_json_safe(text_dict))
     elif game_type == 'Flashcards':
         return render_template('flashcards.html', data=text_dict)
     else:

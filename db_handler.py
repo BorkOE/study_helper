@@ -48,7 +48,8 @@ class DatabaseHandler():
             out_data = self.make_unique(data)
         else: 
             out_data = {tup[0]: tup[1] for tup in data}
-        return self.make_json_safe(out_data)
+        # return self.make_json_safe(out_data)
+        return out_data
 
     def scamble(self, data):
         shuf_keys = list(data.keys())
