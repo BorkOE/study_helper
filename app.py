@@ -58,6 +58,11 @@ def add_element():
     print('Data added to database')
     return render_template("add_data.html")
 
+
+@app.route('/pomodoro', methods=['post', 'get'])
+def pomodoro():
+    return render_template("pomodoro.html")
+
 @app.teardown_appcontext
 def close_connection(exception):
     db = getattr(g, '_database', None)
