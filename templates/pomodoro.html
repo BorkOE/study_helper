@@ -18,7 +18,7 @@
 <body>
 
     <div class="clock">
-        <h2></h2>
+        <h2>Minutes left: -</h2>
     </div>
     
     <br>
@@ -31,7 +31,7 @@
     </select>
     <br>
     <button onclick=start_timer()>Start Pomodoro!</button>
-    <h2></h2>
+    
 
 
 <script>
@@ -42,7 +42,7 @@
     var clock = document.getElementsByClassName('clock')[0].children[0] //h2 element
 
     function update_time(){
-        current_min = millisec_to_minutes(time_left)
+        current_min = millisec_to_minutes(time_left-1)
         if (current_min != last_min){
             clock.innerHTML = "Minutes left: " + current_min
             last_min = current_min
@@ -59,6 +59,7 @@
         var time_len = parseInt(document.getElementById('timer_opt').value)
         ticker = new AdjustingInterval(time_len);
         ticker.start()
+        update_time()
     }
 
     function millisec_to_minutes(milisec){
@@ -72,8 +73,9 @@
         var that = this;
         var expected, timeout;
         this.interval = 1000;
-        var stop_time = Date.now() + timer_len * 60 * 1000
-        time_left = 0;
+        var milisec_time_len = timer_len * 60 * 1000;
+        var stop_time = Date.now() + milisec_time_len;
+        time_left = milisec_time_len;
 
         this.start = function () {
             expected = Date.now() + this.interval;
